@@ -5,9 +5,17 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+// Seed data
+const mensSeedData = require('./seed/mensSunglasses.json')
+
+// Database connection
 const monk = require('monk');
 const url = 'localhost/vivid';
 const db = monk(url);
+
+// Collections
+const mens = db.get('mens')
+const womens = db.get('womens')
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -26,8 +34,30 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
 app.use('/users', users);
+
+app.get('/', (req, res) => {
+  res.send('working')
+})
+
+app.get('/database/seed', (req, res) => {
+  mens.drop()
+    .then(() => {
+      mens.insert(mensSeedData)
+      res.send('seeded')
+    })
+  // womens.drop()
+  // goggles.drop()
+  // mens.insert({ test: 'It Worked!'})
+  
+})
+
+app.get('/data', (req, res) => {
+  mens.find()
+    .then(mens => {
+      res.json(mens)
+    })
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
