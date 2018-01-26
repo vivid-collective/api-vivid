@@ -19,22 +19,23 @@ router.get('/', (req, res, next) => {
         })
 })
 
-//get by id
+router.get('/search', (req, res, next) => {
+    if (req.query.model) {
+        womens.findOne({ 'sunglass.model': req.query.model })
+            .then(model => {
+                res.json(model)
+            })
+    } else {
+        res.json({ error: 'Please enter search term'})
+    }
+});
+
+// get by id
 router.get('/:id', (req, res, next) => {
     womens.findOne({
             _id: req.params.id
         })
         .then((model) => {
-            res.json(model)
-        })
-})
-// find by model
-router.get('/search/:model', (req, res, next) => {
-    womens.find()
-        .then((womens) => {
-            let model = womens.find((thing) => {
-                return thing.sunglass.model === req.params.model;
-            })
             res.json(model)
         })
 })
