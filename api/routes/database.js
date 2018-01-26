@@ -1,11 +1,21 @@
 var express = require('express');
 var router = express.Router();
 
+// Seed data
+const mensSeedData = require('../seed/mensSunglasses.json')
+const womensSeedData = require('../seed/womensSunglasses.json')
+const goggleSeedData = require('../seed/goggleSeedData.json')
+
 // Database connection
 const monk = require('monk');
+const url = 'localhost/vivid';
+const db = monk(url);
 
 // Collections
 const mens = db.get('mens')
+const womens = db.get('womens')
+const goggles = db.get('goggles')
+
 
 // Seed database collections
 router.get('/seed', (req, res) => {

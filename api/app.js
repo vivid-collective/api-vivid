@@ -5,27 +5,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-// Seed data
-const mensSeedData = require('./seed/mensSunglasses.json')
-const womensSeedData = require('./seed/womensSunglasses.json')
-const goggleSeedData = require('./seed/goggleSeedData.json')
+var database = require('./routes/database');
 
+var app = express();
 
 // Database connection
 const monk = require('monk');
 const url = 'localhost/vivid';
 const db = monk(url);
-
-// Collections
-const mens = db.get('mens')
-const womens = db.get('womens')
-const goggles = db.get('goggles')
-
-
-var index = require('./routes/index');
-var users = require('./routes/users');
-
-var app = express();
 
 db.then(() => {
   console.log('Connected correctly to server')
@@ -41,47 +28,17 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/users', users);
+
+
+// ROUTES
+app.use('/database', database);
 
 app.get('/', (req, res) => {
   res.send('working')
 })
 
-// Seed database collections
-app.get('/database/seed', (req, res) => {
-  mens.drop()
-    .then(() => womens.drop())
-    .then(() => goggles.drop())
-    .then(() => {
-      goggles.insert(goggleSeedData)
-      mens.insert(mensSeedData)
-      womens.insert(womensSeedData)
-    })
-    .then(() => {
-      res.send('seeded')
-    })
-})
 
-app.get('/goggles', (req, res) => {
-  goggles.find()
-    .then(goggles => {
-      res.json(goggles)
-    })
-})
 
-app.get('/mens', (req, res) => {
-  mens.find()
-    .then(mens => {
-      res.json(mens)
-    })
-})
-
-app.get('/womens', (req, res) => {
-  womens.find()
-    .then(womens => {
-      res.json(womens)
-    })
-})
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
