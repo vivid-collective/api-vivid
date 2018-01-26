@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 
 // Seed data
 const mensSeedData = require('./seed/mensSunglasses.json')
-const womensSeedData = require('./seed/mensSunglasses.json')
+const womensSeedData = require('./seed/womensSunglasses.json')
 const goggleSeedData = require('./seed/goggleSeedData.json')
 
 
@@ -47,22 +47,39 @@ app.get('/', (req, res) => {
   res.send('working')
 })
 
+// Seed database collections
 app.get('/database/seed', (req, res) => {
-  // mens.drop()
-  //   .then(() => {
-  goggles.insert(goggleSeedData)
-  res.send('seeded goggles')
-  // })
-  // womens.drop()
-  // goggles.drop()
-  // mens.insert({ test: 'It Worked!'})
-
+  mens.drop()
+    .then(() => womens.drop())
+    .then(() => goggles.drop())
+    .then(() => {
+      goggles.insert(goggleSeedData)
+      mens.insert(mensSeedData)
+      womens.insert(womensSeedData)
+    })
+    .then(() => {
+      res.send('seeded')
+    })
 })
 
-app.get('/data', (req, res) => {
+app.get('/goggles', (req, res) => {
   goggles.find()
     .then(goggles => {
       res.json(goggles)
+    })
+})
+
+app.get('/mens', (req, res) => {
+  mens.find()
+    .then(mens => {
+      res.json(mens)
+    })
+})
+
+app.get('/womens', (req, res) => {
+  womens.find()
+    .then(womens => {
+      res.json(womens)
     })
 })
 
