@@ -5,7 +5,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+
+//ROUTE FILES
 var database = require('./routes/database');
+var mens = require('./routes/mens')
+var womens = require('./routes/womens')
+var goggles = require('./routes/goggles')
+
+
 
 var app = express();
 
@@ -32,6 +39,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ROUTES
 app.use('/database', database);
+app.use('/mens', mens);
+app.use('/womens', womens);
+app.use('/goggles', goggles);
+
+
 
 app.get('/', (req, res) => {
   res.send('working')
