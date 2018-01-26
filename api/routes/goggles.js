@@ -35,4 +35,9 @@ router.delete('/:id', (req, res, next) => {
     goggles.findOneAndDelete({ _id: req.params.id }).then(deleted => res.json({ message: 'Deleted', deletedModel: deleted }))
 })
 
+// PATCH One by id
+router.patch('/:id', (req, res, next) => {
+    goggles.findOneAndUpdate({ _id: req.params.id }, { $set: req.body }).then(updated => res.json({ message: 'Updated', updatedModel: updated }))
+})
+
 module.exports = router
