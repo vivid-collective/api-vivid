@@ -30,4 +30,9 @@ router.get('/:id', (req, res, next) => {
     goggles.findOne({ _id: req.params.id }).then(model => res.json(model))
 })
 
+// DELETE One by id
+router.delete('/:id', (req, res, next) => {
+    goggles.findOneAndDelete({ _id: req.params.id }).then(deleted => res.json({ message: 'Deleted', deletedModel: deleted }))
+})
+
 module.exports = router
