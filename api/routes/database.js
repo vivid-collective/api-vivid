@@ -28,8 +28,9 @@ router.get('/seed', (req, res) => {
       womens.insert(womensSeedData)
     })
     .then(() => {
-      res.send('seeded')
+      res.json({ message: 'seeded successfully' })
     })
+    .catch(handleError)
 })
 
 router.get('/goggles', (req, res) => {
@@ -52,5 +53,9 @@ router.get('/womens', (req, res) => {
       res.json(womens)
     })
 })
+
+function handleError(error) {
+  console.error(error)
+}
 
 module.exports = router
