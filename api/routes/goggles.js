@@ -1,10 +1,10 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express')
+var router = express.Router()
 
 // Database connection
-const monk = require('monk');
-const url = 'localhost/vivid';
-const db = monk(url);
+const monk = require('monk')
+const url = 'localhost/vivid'
+const db = monk(url)
 
 // Collections
 const goggles = db.get('goggles')
@@ -30,4 +30,4 @@ router.get('/:id', (req, res, next) => {
     goggles.findOne({ _id: req.params.id }).then(model => res.json(model))
 })
 
-module.exports = router;
+module.exports = router
