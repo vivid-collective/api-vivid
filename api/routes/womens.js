@@ -40,4 +40,9 @@ router.patch('/:id', (req, res, next) => {
     womens.findOneAndUpdate({ _id: req.params.id }, { $set: req.body }).then(updated => res.json({ message: 'Updated', updatedModel: updated }))
 })
 
+// POST One
+router.post('/', (req, res, next) => {
+    womens.insert(req.body).then(posted => res.json({ message: 'Posted', newModel: posted }))
+})
+
 module.exports = router
